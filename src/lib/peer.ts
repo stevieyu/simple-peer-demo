@@ -1,6 +1,6 @@
 import multipeer from './multipeer'
 import {load as fingerprintJSLoad} from '@fingerprintjs/fingerprintjs';
-import initTim, {sendMsg} from './im';
+import initTim, {sendMsg} from './tim';
 import {watch, reactive} from 'vue'
 
 //import.meta.env.MODE === 'development'

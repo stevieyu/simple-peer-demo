@@ -6,7 +6,6 @@
 import { defineComponent } from 'vue'
 import oldApp from './components/oldApp.vue'
 import peer from './lib/peer'
-// import GenUserSig from './lib/genUserSig.ts'
 
 export default defineComponent({
   components: {

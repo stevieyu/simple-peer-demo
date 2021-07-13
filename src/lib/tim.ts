@@ -1,5 +1,5 @@
 import TIM from 'tim-js-sdk';
-import Api from './genUserSig'
+import Api from './timGenUserSig'
 
 let tim:any
 
