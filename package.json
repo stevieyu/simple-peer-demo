@@ -3,25 +3,28 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 3087",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "surge": "npx surge dist vue-vite.surge.stevie.top"
   },
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.0.6",
-    "ky": "^0.27.0",
-    "simple-peer": "^9.10.0",
-    "tim-js-sdk": "^2.10.1",
-    "vue": "^3.0.9"
+    "@fingerprintjs/fingerprintjs": "^3.2.0",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.0.0",
+    "ky": "^0.28.0",
+    "pako": "^2.0.0",
+    "simple-peer": "^9.11.0",
+    "tim-js-sdk": "^2.12.0",
+    "vue": "^3.1.4"
   },
   "devDependencies": {
-    "@types/simple-peer": "^9.6.2",
-    "@vitejs/plugin-vue": "^1.2.0",
-    "@vue/compiler-sfc": "^3.0.9",
-    "typescript": "^4.1.3",
-    "vite": "^2.1.3",
-    "vue-tsc": "^0.0.16"
+    "@types/simple-peer": "^9.11.1",
+    "@vitejs/plugin-vue": "^1.2.4",
+    "@vue/compiler-sfc": "^3.1.4",
+    "typescript": "^4.3.5",
+    "vite": "^2.4.1",
+    "vue-tsc": "^0.2.0"
   },
   "optionalDependencies": {}
 }

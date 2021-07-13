@@ -1,25 +1,18 @@
 import TIM from 'tim-js-sdk';
-
-const load = (src:string = ''): PromiseLike<void> => {
-    return new Promise((resolve) => {
-        const el = document.createElement('script')
-        el.src = src;
-        el.onload = () => resolve()
-        document.head.append(el);
-    })
-}
+import Api from './genUserSig'
 
 let tim:any
 
 const initTim = (userID: string): PromiseLike<any> => {
-    // @ts-ignore
-    const genTestUserSig = window.genTestUserSig
+    const SDKAppID = 1400085368;
+    const SDKAppKey = '9f0fb95bd7a8b97f6bc86b2b4910b37b15643b56a6cd1ea5691463f95b6eed50';
 
-    const {SDKAppID, userSig} = genTestUserSig(userID);
+    const userSig = (new Api(SDKAppID, SDKAppKey)).genSig(userID, 604800)
+
     tim = TIM.create({
-        SDKAppID
+        SDKAppID,
     });
-    tim.setLogLevel(1); // https://imsdk-1252463788.file.myqcloud.com/IM_DOC/Web/SDK.html#setLogLevel
+    tim.setLogLevel(3); // https://imsdk-1252463788.file.myqcloud.com/IM_DOC/Web/SDK.html#setLogLevel
 
     tim.login({
         userID,
@@ -47,8 +40,5 @@ export const sendMsg = (description = '', to = 'Z', data = '', extension = '') =
 }
 
 export default async (id:string) => {
-    await load('https://cdn.jsdelivr.net/gh/tencentyun/TIMSDK/H5/dist/debug/lib-generate-test-usersig.min.js')
-    await load('/GenerateTestUserSig.js')
-
     return await initTim(id)
 }

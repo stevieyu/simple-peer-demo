@@ -32,9 +32,11 @@ const mp = multipeer()
     })
 
 export default async () => {
-    const {visitorId} = (await (await fingerprintJSLoad()).get())
+    const {visitorId} = await (await fingerprintJSLoad()).get()
 
     const tim = await initTim(visitorId);
+
+    console.log('visitorId', visitorId)
 
     const send = (description:any = '', to = toUid, data = 'signal', extension = '') => {
         if(description) description = JSON.stringify(description)
