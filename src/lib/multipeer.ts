@@ -62,7 +62,7 @@ export default ():MP => {
             if(peers.has(id)) throw '重复ID';
 
             const peer = new SimplePeer({
-                trickle: false,
+                // trickle: false,
                 initiator,
                 config,
                 channelConfig

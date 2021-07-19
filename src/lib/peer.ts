@@ -1,7 +1,8 @@
 import multipeer from './multipeer'
 import {load as fingerprintJSLoad} from '@fingerprintjs/fingerprintjs';
-import initTim, {sendMsg} from './tim';
-import {watch, reactive} from 'vue'
+import room from './tim';
+import {reactive} from 'vue'
+import { debouncedWatch } from '@vueuse/core'
 
 //import.meta.env.MODE === 'development'
 
@@ -33,45 +34,37 @@ const mp = multipeer()
 
 export default async () => {
     const {visitorId} = await (await fingerprintJSLoad()).get()
-
-    const tim = await initTim(visitorId);
-
-    console.log('visitorId', visitorId)
-
-    const send = (description:any = '', to = toUid, data = 'signal', extension = '') => {
-        if(description) description = JSON.stringify(description)
-        sendMsg(description, to, data, extension)
-    }
+    const Room = await room(visitorId);
 
     if (!!toUid && toUid !== visitorId) {
+        // 加入
         peer = mp.add(toUid, false)
-        send()
+        await Room.send(toUid)
     } else {
+        // 创建
         peer = mp.add(visitorId)
         history.replaceState(null, '', `#${visitorId}`)
     }
 
-    tim.on('onMessageReceived', (event: any) => {
-        const {data: {0: value}} = event
-        console.log('MESSAGE_RECEIVED', value)
+    Room.receive((res:any) => {
+        console.log('MESSAGE_RECEIVED', res)
 
-        const {payload: {data: type, description}, from} = value
-        if (type !== 'signal') return;
+        const {data, from} = res
 
-        if (description) {
-            JSON.parse(description).forEach((v:any) => peer.signal(v))
+        if (data) {
+            data.forEach((v:any) => peer.signal(v))
 
-            const wsStop = watch(signals, () => {
-                send(signals, from)
+            const wsStop = debouncedWatch(signals, () => {
+                Room.send(from, signals)
                 wsStop();
-            })
+            }, { debounce: 100 })
         } else if (signals.length) {
-            send(signals, from)
+            Room.send(from, signals)
         } else {
-            const wsStop = watch(signals, () => {
-                send(signals, from)
+            const wsStop = debouncedWatch(signals, () => {
+                signals.length && Room.send(from, signals)
                 wsStop()
-            })
+            }, { debounce: 100 })
         }
     });
 }
