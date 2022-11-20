@@ -1,6 +1,10 @@
 import TIM from 'tim-js-sdk';
-import Api from './timGenUserSig'
+// @ts-ignore
+import Api from './timGenUserSig.js'
 import Room from './room'
+
+//https://cloud.tencent.com/document/product/269/37459
+//https://web.sdk.qcloud.com/im/doc/zh-cn/SDK.html#createGroup
 
 class Tim implements Room{
     private tim:any

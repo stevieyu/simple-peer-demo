@@ -1,23 +1,18 @@
-// @ts-ignore
 import hmacSHA256 from 'crypto-js/hmac-sha256'
-// @ts-ignore
 import Base64 from 'crypto-js/enc-base64'
-// @ts-ignore
 import pako from 'pako'
 
 export default class {
-    private readonly sdkappid: any
-    private readonly key: any
 
-    constructor(sdkappid:any, key:any) {
+    constructor(sdkappid, key) {
         this.sdkappid = sdkappid;
         this.key = key;
     }
 
-    public genSig(userid:any, expire:any, userBuf:any = null){
+    genSig(userid, expire, userBuf = null){
         const currTime = Math.floor(Date.now() / 1000);
 
-        const sigDoc:any = {
+        const sigDoc = {
             'TLS.ver': "2.0",
             'TLS.identifier': "" + userid,
             'TLS.sdkappid': Number(this.sdkappid),
@@ -41,7 +36,7 @@ export default class {
             .replace(/=/g, '_')
     }
 
-    private _hmacsha256(identifier:any, currTime:any, expire:any, base64UserBuf:any) {
+    _hmacsha256(identifier, currTime, expire, base64UserBuf) {
         let contentToBeSigned = "TLS.identifier:" + identifier + "\n";
         contentToBeSigned += "TLS.sdkappid:" + this.sdkappid + "\n";
         contentToBeSigned += "TLS.time:" + currTime + "\n";
